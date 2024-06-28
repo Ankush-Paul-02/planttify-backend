@@ -13,7 +13,7 @@ spring:
 application:
   jwt:
     secret: b2f3e05b0b0f0e0ebe95d19c37fcf236bb3dd29f4cd00b946e27d7c6cfd199e6
-    expiration: 86400000
-  refresh:
     expiration: 864000000
+  refresh:
+    expiration: 8640000000
 

@@ -9,19 +9,22 @@ import com.devmare.hack4bengal.data.model.Group;
 import com.devmare.hack4bengal.data.model.Roles;
 import com.devmare.hack4bengal.data.model.User;
 import com.devmare.hack4bengal.data.repository.GroupRepository;
+import com.devmare.hack4bengal.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Override
@@ -31,19 +34,53 @@ public class GroupServiceImpl implements GroupService {
             throw new UserInfoException("Group with name " + createGroupDto.getName() + " already exists");
         }
         Set<Roles> roles = userService.findAuthenticatedUser().getRoles();
-        roles.stream().map(
-                role -> role.getName().equals(Role.ADMIN) || role.getName().equals(Role.SUPER_ADMIN)
-        ).findFirst().orElseThrow(() -> new UserInfoException("User is not an admin or super admin!"));
+        log.info("User roles: {}", roles);
 
-        List<User> users = new ArrayList<>();
-        users.add(userService.findAuthenticatedUser());
+        boolean isAdminOrSuperAdmin = roles.stream()
+                .anyMatch(role -> role.getName() == Role.ADMIN || role.getName() == Role.SUPER_ADMIN);
+
+        if (!isAdminOrSuperAdmin) {
+            throw new UserInfoException("User is not an admin or super admin!");
+        }
+
+
+        Set<String> usersIds = new HashSet<>();
+        usersIds.add(userService.findAuthenticatedUser().getId());
 
         Group group = Group.builder()
                 .name(createGroupDto.getName())
                 .owner(userService.findAuthenticatedUser())
-                .members(users)
+                .membersIds(usersIds)
                 .build();
         group = groupRepository.save(group);
         return group;
     }
+
+    @Override
+    public String joinGroup(
+            String groupId,
+            String userId
+    ) {
+        Optional<Group> optionalGroup = groupRepository.findById(groupId);
+        if (optionalGroup.isEmpty()) {
+            throw new UserInfoException("Group with id " + groupId + " not found");
+        }
+        Group group = optionalGroup.get();
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new UserInfoException("User with id " + userId + " not found");
+        }
+        User user = optionalUser.get();
+
+        Set<String> membersIds = group.getMembersIds();
+        if (membersIds.contains(userId)) {
+            throw new UserInfoException("User with id " + userId + " already in group with id " + groupId);
+        }
+
+        group.getMembersIds().add(user.getId());
+        groupRepository.save(group);
+        return "User with id " + userId + " joined group with id " + groupId + " successfully";
+    }
+
+
 }

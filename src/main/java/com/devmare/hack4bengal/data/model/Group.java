@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -26,6 +26,6 @@ public class Group {
     @NotBlank(message = "Owner is mandatory")
     private User owner;
 
-    private List<User> members;
+    private Set<String> membersIds;
 
 }
