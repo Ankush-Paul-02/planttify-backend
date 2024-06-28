@@ -1,0 +1,19 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: hack4Bengal
+  data:
+    mongodb:
+      database: HackBengal
+      port: 27017
+      host: localhost
+      uri: mongodb+srv://root:root@cluster0.oax8sxw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+application:
+  jwt:
+    secret: b2f3e05b0b0f0e0ebe95d19c37fcf236bb3dd29f4cd00b946e27d7c6cfd199e6
+    expiration: 86400000
+  refresh:
+    expiration: 864000000
+
