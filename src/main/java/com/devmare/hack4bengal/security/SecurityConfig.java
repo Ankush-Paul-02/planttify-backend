@@ -53,7 +53,8 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/swagger-ui.html",
                                         "/v3/api-docs/**",
-                                        "/api-docs/**"
+                                        "/api-docs/**",
+                                        "api/v1/group/all"
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/superadmin/**")
