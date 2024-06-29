@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequestDto {
 
-
     @NotBlank
     private String name;
 
@@ -28,4 +27,8 @@ public class RegisterRequestDto {
 
     @NotBlank
     private String gender;
+
+    @NotBlank
+    @Size(min = 10, max = 10, message = "Phone number must be 10 digits")
+    private String phone;
 }

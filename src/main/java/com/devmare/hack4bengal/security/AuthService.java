@@ -10,7 +10,6 @@ import com.devmare.hack4bengal.data.model.Roles;
 import com.devmare.hack4bengal.data.model.User;
 import com.devmare.hack4bengal.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,10 +36,27 @@ public class AuthService {
             throw new UserInfoException("User already exists with email: " + requestDto.getEmail());
         }
 
+        if (requestDto.getEmail() == null || requestDto.getEmail().isEmpty()) {
+            throw new UserInfoException("Email is mandatory");
+        }
+        if (requestDto.getName() == null || requestDto.getName().isEmpty()) {
+            throw new UserInfoException("Name is mandatory");
+        }
+        if (requestDto.getPassword() == null || requestDto.getPassword().isEmpty()) {
+            throw new UserInfoException("Password is mandatory");
+        }
+        if (requestDto.getGender() == null || requestDto.getGender().isEmpty()) {
+            throw new UserInfoException("Gender is mandatory");
+        }
+        if (requestDto.getPhone() == null || requestDto.getPhone().isEmpty()) {
+            throw new UserInfoException("Phone is mandatory");
+        }
+
         User newUser = User.builder()
                 .name(requestDto.getName())
                 .email(requestDto.getEmail())
-                .gender(requestDto.getGender())
+                .gender(requestDto.getGender().toUpperCase())
+                .password(requestDto.getPassword())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .isAccountNonLocked(true)
                 .isAccountNonExpired(true)

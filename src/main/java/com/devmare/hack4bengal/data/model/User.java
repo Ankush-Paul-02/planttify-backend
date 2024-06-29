@@ -42,6 +42,9 @@ public class User implements UserDetails {
 
     private String gender;
 
+    @Size(min = 10, max = 10, message = "Phone number must be 10 digits")
+    private String phone;
+
     @DBRef
     @JsonManagedReference
     private RefreshToken refreshToken;
