@@ -1,14 +1,13 @@
-# Use Eclipse Temurin OpenJDK 17 as the base image
-FROM eclipse-temurin:17-jre-focal
+FROM eclipse-temurin:17-jre-jammy as builder
+WORKDIR /opt/app
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+COPY ./src ./src
+RUN ./mvnw clean install
 
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy the Spring Boot application JAR file into the container
-COPY target/Hack4Bengal-0.0.1-SNAPSHOT.jar /app/Hack4Bengal.jar
-
-# Expose the port that the Spring Boot application uses
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /opt/app
 EXPOSE 8080
-
-# Command to run the Spring Boot application when the container starts
-ENTRYPOINT ["java", "-jar", "/app/Hack4Bengal.jar"]
+COPY --from=builder /opt/app/target/*.jar /opt/app/*.jar
+ENTRYPOINT ["java", "-jar", "/opt/app/*.jar"]
