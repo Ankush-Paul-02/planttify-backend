@@ -13,10 +13,7 @@ import com.devmare.hack4bengal.security.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -31,6 +28,7 @@ public class AuthController {
     private final RefresTokenRepository refresTokenRepository;
     private final JwtService jwtService;
 
+    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<DefaultResponse> register(
             @RequestBody RegisterRequestDto requestDto
@@ -44,6 +42,7 @@ public class AuthController {
         );
     }
 
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<DefaultResponse> login(
             @RequestBody LoginRequestDto requestDto
