@@ -6,10 +6,7 @@ import com.devmare.hack4bengal.business.dto.GroupJoinDto;
 import com.devmare.hack4bengal.business.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -55,7 +52,7 @@ public class GroupController {
         );
     }
 
-    @PostMapping("/all")
+    @GetMapping("/all")
     public ResponseEntity<DefaultResponse> getAllGroups() {
         return ResponseEntity.ok(
                 new DefaultResponse(
