@@ -19,7 +19,8 @@ import java.util.Map;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1/auth")
+@CrossOrigin("https://hack4bengal-427818.df.r.appspot.com")
+//@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -28,7 +29,7 @@ public class AuthController {
     private final RefresTokenRepository refresTokenRepository;
     private final JwtService jwtService;
 
-    @PostMapping("/register")
+    @PostMapping("/api/v1/auth/register")
     @CrossOrigin("*")
     public ResponseEntity<DefaultResponse> register(
             @RequestBody RegisterRequestDto requestDto
