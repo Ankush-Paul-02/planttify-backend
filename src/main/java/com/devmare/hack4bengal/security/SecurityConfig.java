@@ -12,6 +12,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 import static com.devmare.hack4bengal.data.enums.Role.ADMIN;
 import static com.devmare.hack4bengal.data.enums.Role.SUPER_ADMIN;
@@ -26,10 +31,27 @@ public class SecurityConfig {
     private final AuthenticationProvider provider;
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(
+                "https://hack4bengal-427818.df.r.appspot.com",
+                "http://localhost:8001",
+                "http://localhost:8002",
+                "http://localhost:8003"
+        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .cors(
+                        c -> c.configurationSource(corsConfigurationSource())
+                )
                 .authorizeHttpRequests(
                         authRequest -> authRequest
                                 .requestMatchers(
