@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.devmare.hack4bengal.data.enums.Role.ADMIN;
@@ -35,7 +36,13 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(
-                        Customizer.withDefaults()
+                        cors -> cors.configurationSource(request -> {
+                            CorsConfiguration configuration = new CorsConfiguration();
+                            configuration.setAllowedOrigins(Arrays.asList("*"));
+                            configuration.setAllowedMethods(Arrays.asList("*"));
+                            configuration.setAllowedHeaders(Arrays.asList("*"));
+                            return configuration;
+                        })
                 )
                 .authorizeHttpRequests(
                         authRequest -> authRequest
