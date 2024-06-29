@@ -30,7 +30,6 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/api/v1/auth/register")
-    @CrossOrigin("*")
     public ResponseEntity<DefaultResponse> register(
             @RequestBody RegisterRequestDto requestDto
     ) {

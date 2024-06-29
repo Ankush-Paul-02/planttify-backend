@@ -31,26 +31,11 @@ public class SecurityConfig {
     private final AuthenticationProvider provider;
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-                "https://hack4bengal-427818.df.r.appspot.com",
-                "http://localhost:8001",
-                "http://localhost:8002",
-                "http://localhost:8003"
-        ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(
-                        c -> c.configurationSource(corsConfigurationSource())
+                        Customizer.withDefaults()
                 )
                 .authorizeHttpRequests(
                         authRequest -> authRequest
