@@ -14,7 +14,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.Year;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -47,9 +51,17 @@ public class GroupServiceImpl implements GroupService {
         Set<String> usersIds = new HashSet<>();
         usersIds.add(userService.findAuthenticatedUser().getId());
 
+        Clock clock = Clock.systemUTC();
+        Instant now = clock.instant();
+
+        int currentYear = Year.from(now.atZone(clock.getZone())).getValue();
+
         Group group = Group.builder()
                 .name(createGroupDto.getName())
                 .owner(userService.findAuthenticatedUser())
+                .year(Year.of(currentYear))
+                .description(createGroupDto.getDescription())
+                .location(createGroupDto.getLocation())
                 .membersIds(usersIds)
                 .build();
         group = groupRepository.save(group);
@@ -82,5 +94,8 @@ public class GroupServiceImpl implements GroupService {
         return "User with id " + userId + " joined group with id " + groupId + " successfully";
     }
 
-
+    @Override
+    public List<Group> getAllGroups() {
+        return groupRepository.findAll();
+    }
 }

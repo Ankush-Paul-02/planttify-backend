@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Year;
 import java.util.Set;
 
 @Setter
@@ -25,6 +26,10 @@ public class Group {
 
     @NotBlank(message = "Owner is mandatory")
     private User owner;
+
+    private String location;
+    private String description;
+    private Year year;
 
     private Set<String> membersIds;
 

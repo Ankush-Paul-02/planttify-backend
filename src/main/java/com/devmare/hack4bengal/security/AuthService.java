@@ -56,6 +56,7 @@ public class AuthService {
                 .name(requestDto.getName())
                 .email(requestDto.getEmail())
                 .gender(requestDto.getGender().toUpperCase())
+                .phone("+91" + requestDto.getPhone())
                 .password(requestDto.getPassword())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .isAccountNonLocked(true)

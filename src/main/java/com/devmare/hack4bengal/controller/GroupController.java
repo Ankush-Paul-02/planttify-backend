@@ -54,4 +54,18 @@ public class GroupController {
                 )
         );
     }
+
+    @PostMapping("/all")
+    public ResponseEntity<DefaultResponse> getAllGroups() {
+        return ResponseEntity.ok(
+                new DefaultResponse(
+                        DefaultResponse.Status.SUCCESS,
+                        Map.of(
+                                "data",
+                                groupService.getAllGroups()
+                        ),
+                        "All groups fetched successfully"
+                )
+        );
+    }
 }

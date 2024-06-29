@@ -14,4 +14,10 @@ public class CreateGroupDto {
 
     @NotBlank(message = "Name is mandatory")
     private String name;
+
+    @NotBlank(message = "Location is mandatory")
+    private String location;
+
+    @NotBlank(message = "Description is mandatory")
+    private String description;
 }
