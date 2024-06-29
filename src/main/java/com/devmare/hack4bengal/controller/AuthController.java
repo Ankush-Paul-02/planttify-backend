@@ -28,7 +28,6 @@ public class AuthController {
     private final RefresTokenRepository refresTokenRepository;
     private final JwtService jwtService;
 
-    @CrossOrigin("https://hack4bengal-427818.df.r.appspot.com/api/v1/auth/register")
     @PostMapping("/register")
     public ResponseEntity<DefaultResponse> register(
             @RequestBody RegisterRequestDto requestDto
