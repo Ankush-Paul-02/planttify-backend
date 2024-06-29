@@ -40,6 +40,7 @@ public class AuthService {
         User newUser = User.builder()
                 .name(requestDto.getName())
                 .email(requestDto.getEmail())
+                .gender(requestDto.getGender())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
                 .isAccountNonLocked(true)
                 .isAccountNonExpired(true)
