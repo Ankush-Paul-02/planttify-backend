@@ -28,7 +28,6 @@ public class AuthController {
     private final RefresTokenRepository refresTokenRepository;
     private final JwtService jwtService;
 
-    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<DefaultResponse> register(
             @RequestBody RegisterRequestDto requestDto
@@ -42,7 +41,6 @@ public class AuthController {
         );
     }
 
-    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<DefaultResponse> login(
             @RequestBody LoginRequestDto requestDto
